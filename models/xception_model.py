@@ -16,10 +16,11 @@ class XceptionModel(BaseModel):
 
     def build_model(self):
 
-        weight_decay=1e-4
-        classes=10
+        weight_decay=self.config.model.weight_decay
+        classes= self.config.model.classes
+        dropout=self.config.model.dropout
          
-        img_input = Input( shape=(299, 299, 3) )
+        img_input = Input( shape=(self.config.data_loader.image_size, self.config.data_loader.image_size, 3) )
 
         x = Conv2D(32, (3, 3), strides=(2, 2), use_bias=False, name='block1_conv1')(img_input)
         x = BatchNormalization(name='block1_conv1_bn')(x)
@@ -119,7 +120,7 @@ class XceptionModel(BaseModel):
         self.model.load_weights(weights_path)
         
         x = self.model.output
-        x = Dropout(0.5)(x)
+        x = Dropout(dropout)(x)
         logits = Dense(classes, kernel_regularizer=keras.regularizers.l2(weight_decay))(x)
         probabilities = Activation('softmax')(logits)
 

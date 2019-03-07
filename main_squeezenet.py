@@ -1,5 +1,5 @@
 from data_loader.stl_10_data_loader import Stl10DataLoader
-from models.xception_model import XceptionModel
+from models.squeezenet_model import SqueezenetModel
 from trainers.generator_trainer import GeneratorModelTrainer
 from utils.config import process_config
 from utils.dirs import create_dirs
@@ -22,7 +22,7 @@ def main():
     data_loader = Stl10DataLoader(config)
 
     print('Create the model.')
-    model = XceptionModel(config)
+    model = SqueezenetModel(config)
 
     print('Create the trainer')
     trainer = GeneratorModelTrainer(model.model, data_loader.train_generator, data_loader.val_generator , config)

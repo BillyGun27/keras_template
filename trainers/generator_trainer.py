@@ -1,11 +1,11 @@
 from base.base_trainer import BaseTrain
 import os
 from keras.callbacks import ModelCheckpoint, TensorBoard
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
-
-class XceptionModelTrainer(BaseTrain):
+class GeneratorModelTrainer(BaseTrain):
     def __init__(self, model, train_gen ,val_gen , config):
-        super(XceptionModelTrainer, self).__init__(model, train_gen ,val_gen , config)
+        super( GeneratorModelTrainer , self).__init__(model, train_gen ,val_gen , config)
         self.callbacks = []
         self.loss = []
         self.acc = []
@@ -31,6 +31,12 @@ class XceptionModelTrainer(BaseTrain):
                 write_graph=self.config.callbacks.tensorboard_write_graph,
             )
         )
+        self.callbacks.append(
+            EarlyStopping(monitor='val_acc', patience=4, min_delta=0.01)
+        )
+        self.callbacks.append(
+            ReduceLROnPlateau(monitor='val_acc', factor=0.1, patience=2, epsilon=0.007)
+        )
     '''
         if hasattr(self.config,"comet_api_key"):
             from comet_ml import Experiment
@@ -42,12 +48,13 @@ class XceptionModelTrainer(BaseTrain):
     def train(self):
         history = self.model.fit_generator(
             self.train_gen, 
-            steps_per_epoch = 5000//50,
+            steps_per_epoch = self.train_gen.n//self.train_gen.batch_size,
             epochs=self.config.trainer.num_epochs,
             verbose=self.config.trainer.verbose_training,
             #batch_size=self.config.trainer.batch_size,
             callbacks=self.callbacks,
-            validation_data=self.val_gen, validation_steps=3000//50, workers=4
+            validation_data=self.val_gen, validation_steps=self.val_gen.n//self.val_gen.batch_size, 
+            workers=4
         )
         self.loss.extend(history.history['loss'])
         self.acc.extend(history.history['acc'])

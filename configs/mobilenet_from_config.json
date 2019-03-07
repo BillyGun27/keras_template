@@ -4,15 +4,16 @@
   },
   "data_loader": {
     "name": "stl_10_data_loader.Stl10DataLoader",
-    "image_size" : 299
+    "image_size" : 224
   },
   "model":{
-    "name": "xception_model.XceptionModel",
+    "name": "mobilenet_model.MobilenetModel",
     "learning_rate": 0.001,
     "optimizer": "adadelta",
     "classes":10,
-    "weight_decay":1e-4,
-    "dropout":0.5
+    "weight_decay":1e-5,
+    "alpha":0.35,
+    "dropout":0.1
   },
   "trainer":{
     "name": "generator_trainer.GeneratorModelTrainer",

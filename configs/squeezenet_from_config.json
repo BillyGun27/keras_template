@@ -7,12 +7,11 @@
     "image_size" : 299
   },
   "model":{
-    "name": "xception_model.XceptionModel",
+    "name": "squeezenet_model.SqueezenetModel",
     "learning_rate": 0.001,
     "optimizer": "adadelta",
     "classes":10,
-    "weight_decay":1e-4,
-    "dropout":0.5
+    "weight_decay":1e-4
   },
   "trainer":{
     "name": "generator_trainer.GeneratorModelTrainer",

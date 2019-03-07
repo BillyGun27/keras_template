@@ -1,4 +1,4 @@
-from data_loader.stl_10_data_loader import Stl10DataLoader
+from data_loader.stl_10_logits_loader import Stl10LogitsLoader
 from models.xception_model import XceptionModel
 from trainers.generator_trainer import GeneratorModelTrainer
 from utils.config import process_config
