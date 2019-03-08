@@ -25,7 +25,7 @@ def main():
     model = XceptionModel(config)
 
     print('Create the trainer')
-    trainer = GeneratorModelTrainer(model.model, data_loader.train_generator, data_loader.val_generator , config)
+    trainer = GeneratorModelTrainer(model.model, data_loader.train_generator, data_loader.test_generator , config)
 
     print('Start training the model.')
     trainer.train()
