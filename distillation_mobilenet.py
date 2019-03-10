@@ -19,7 +19,7 @@ def main():
     create_dirs([config.callbacks.tensorboard_log_dir, config.callbacks.checkpoint_dir])
 
     print('Create the data generator.')
-    data_loader = Stl10DataLoader(config)
+    data_loader = Stl10DistillationLoader(config)
 
     print('Create the model.')
     model = MobilenetModel(config)
